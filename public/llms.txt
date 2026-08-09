@@ -1,28 +1,40 @@
 # ROM GUARD
 
-> A dataset about Xiaomi ROM changes focused only on whether they can be undone.
-> No ROM distribution or flashing instructions. Nonprofit and advertising-free.
+> A dataset covering one question about Xiaomi ROM flashing: can you undo it?
+> No ROM files are hosted and no flashing instructions are published.
+> Non-commercial, no ads, no affiliate links.
 
 ## Policy
 
-- Two permanent failure modes: Anti-Rollback (ARB) violation and EDL (9008) without an authorized Mi Account.
-- Never mirror ROM files: redistribution rights, source obligations, and distributor responsibility apply.
-- Values require source URLs and verification dates. Leave unverified fields null; the build enforces this.
+- Two conditions make a device permanently unrecoverable: an Anti-Rollback (ARB) eFuse violation,
+  and dropping to EDL (9008) without an authorized Mi Account.
+- ROM files are never mirrored: no redistribution right, GPL source obligations, and mirroring
+  makes the host the publisher if a build is compromised.
+- A field with a value must carry a source URL and a verification date. Unverified fields stay null.
+  Enforced at build time, not by convention.
+- Hashes are computed from files downloaded here. Hashes transcribed from upstream pages are rejected.
+
+## Regions
+
+Firmware ships per market and what you lose by leaving your region's build differs by country:
+carrier VoLTE profiles and band tables everywhere, FeliCa on Japanese units, additional account
+binding on mainland-China units. Radio-equipment certification and warranty law also differ —
+follow the laws that apply where you are.
 
 ## Data
 
-- [Devices](https://romguard.pages.dev/data/devices.json): Per-device bootloader unlock, EDL, ARB, FeliCa, and LineageOS data
-- [Rules](https://romguard.pages.dev/data/rules.json): Reversibility rules, ROM types, and writable layers
-- [Hash records](https://romguard.pages.dev/data/roms.json): SHA-256 records for distributed files, computed locally
+- [Devices](https://romguard.pages.dev/data/devices.json): unlock policy, EDL auth, ARB, FeliCa, LineageOS
+- [Rules](https://romguard.pages.dev/data/rules.json): reversible vs irreversible, ROM types, writable layers
+- [Hashes](https://romguard.pages.dev/data/roms.json): SHA-256 records of distributed ROM files
 
 ## Pages
 
-- [Check](https://romguard.pages.dev/): Checks before flashing
-- [Irreversible conditions](https://romguard.pages.dev/risk/): ARB, EDL, and relocking details
-- [Hash verification](https://romguard.pages.dev/verify/): Verification steps and the limits of hash checking
-- [Devices](https://romguard.pages.dev/devices/): Device list, including unverified fields
-- [About](https://romguard.pages.dev/about/): Policy and disclaimer
+- [Check](https://romguard.pages.dev/) — run before flashing
+- [What cannot be undone](https://romguard.pages.dev/risk/) — ARB, EDL, relocking
+- [Hash records](https://romguard.pages.dev/verify/) — how to check a download, and what it does not catch
+- [Devices](https://romguard.pages.dev/devices/) — including unverified fields
+- [About](https://romguard.pages.dev/about/) — policy and disclaimer
 
-## Notes
+## Note
 
-No warranty. Using devices without required local certification may violate applicable radio laws.
+No warranty. Flashing can render a device permanently unusable.

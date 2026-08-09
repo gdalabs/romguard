@@ -38,6 +38,9 @@ const NAV = [
   ["/about/", "about"],
 ];
 
+const FOOTER = `  <p>ROM GUARD — no warranty. Flashing can end a device permanently. Follow the laws that apply where you are.</p>
+  <p>Data CC BY 4.0 / code MIT · <a href="https://github.com/gdalabs/romguard">GitHub</a> · GDA Labs</p>`;
+
 function page({ path, title, desc, body }) {
   const nav = NAV.map(([h, t]) =>
     `<a href="${h}"${h === path ? ' aria-current="page"' : ""}>${t}</a>`).join("\n    ");
@@ -65,8 +68,7 @@ ${body}
 </main>
 
 <footer class="site"><div class="wrap">
-  <p>ROM GUARD — no warranty. Flashing can end a device permanently. Follow the laws that apply where you are.</p>
-  <p>Data CC BY 4.0 / code MIT · <a href="https://github.com/gdalabs/romguard">GitHub</a> · GDA Labs</p>
+${FOOTER}
 </div></footer>
 </body>
 </html>
@@ -75,16 +77,23 @@ ${body}
 
 /* ---------------- /risk/ ---------------- */
 const SEV = {
-  permanent: ["danger", "irrecoverable"],
-  "practically-permanent": ["danger", "not recoverable by the user"],
+  permanent: ["danger", "unrecoverable"],
+  "practically-permanent": ["danger", "not recoverable by you"],
   "usually-recoverable": ["warn", "usually recoverable"],
+};
+
+const REGION_TAG = {
+  all: "",
+  JP: ' <span class="tag">JP models</span>',
+  "region-specific": ' <span class="tag">region-specific</span>',
 };
 
 const riskBody = `
 <h1>What cannot be undone</h1>
 <p class="lead">
-  Most ROM-flashing failures can be recovered using the official fastboot ROM.
-  Irrecoverable failures are limited; the two principal cases below can only be <strong>avoided before flashing</strong>.
+  Almost everything that goes wrong while flashing is fixed by writing the official fastboot ROM back.
+  The exceptions are few, and the two below account for nearly all of them.
+  <strong>Both can only be avoided before you flash.</strong>
 </p>
 
 ${rules.irreversible.map((r) => {
@@ -109,23 +118,25 @@ ${rules.reversible.map((r) => `
   ${srcList(r.sources)}
 </div>`).join("\n")}
 
-<h2 id="lost">What unlocking can cost you</h2>
-<p>These do not brick the device, but <strong>can begin at unlock and may persist after relocking</strong>.</p>
+<h2 id="lost">What unlocking costs you</h2>
+<p>None of these break the device, but they take effect the moment the bootloader is unlocked,
+and relocking does not always bring them back. The last three depend on where the device was sold.</p>
 <div class="scroll"><table>
 <tr><th style="width:30%">Item</th><th>Detail</th></tr>
-${rules.lost_on_unlock.map((l) => `<tr><th>${esc(l.title)}</th><td>${esc(l.detail)}${srcList(l.sources)}</td></tr>`).join("\n")}
+${rules.lost_on_unlock.map((l) => `<tr><th>${esc(l.title)}${REGION_TAG[l.region] ?? ""}</th><td>${esc(l.detail)}${srcList(l.sources)}</td></tr>`).join("\n")}
 </table></div>
 
 <h2 id="policy">Whether you can unlock at all</h2>
 <p>${esc(rules.unlock_policy.summary)}</p>
 <ul>${rules.unlock_policy.conditions.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>
+<p>${esc(rules.unlock_policy.regional_note)}</p>
 ${srcList(rules.unlock_policy.sources)}
 
 <h2 id="layers">Which layers actually change</h2>
 <p>It is tempting to assume that because HyperOS is itself a modified Android, a third party can replace
 the whole stack. It cannot. Only the top layer is in reach.</p>
 <div class="scroll"><table>
-<tr><th style="width:45%">Layer</th><th style="width:15%">Third party</th><th>Notes</th></tr>
+<tr><th style="width:45%">Layer</th><th style="width:18%">Third party</th><th>Notes</th></tr>
 ${rules.layers.map((l) => `<tr><th>${esc(l.name)}</th><td>${l.flashable_by_third_party ? '<span class="tag warn">writable</span>' : '<span class="tag">locked</span>'}</td><td>${esc(l.detail)}</td></tr>`).join("\n")}
 </table></div>
 
@@ -161,10 +172,13 @@ const unknownCells = devices.devices.reduce((n, d) => n + F.filter(([k]) => d.fi
 const devicesBody = `
 <h1>Devices</h1>
 <p class="lead">
-  ${devices.devices.length} devices / <strong>${unknownCells} of ${totalCells} fields unverified</strong> (${Math.round(unknownCells / totalCells * 100)}%).
-  Blank means not yet verified; it is never filled by guessing.
-  <code>arb</code> and <code>felica</code> require a device or fastboot ROM metadata, so most entries are blank.
+  ${devices.devices.length} devices, <strong>${unknownCells} of ${totalCells} fields unverified</strong>
+  (${Math.round(unknownCells / totalCells * 100)}%). A blank cell means nobody has checked, not that the
+  answer is no. <code>arb</code> and <code>felica</code> need the physical device or the fastboot ROM
+  metadata, which is why most of them are blank.
 </p>
+<p class="src">Markets: GL = global, CN = mainland China, JP = Japan. Mainland-China units follow a
+stricter unlock path than the rest.</p>
 <div class="scroll"><table>
 <tr><th>Device</th><th>Markets</th>${F.map(([, l]) => `<th>${l}</th>`).join("")}</tr>
 ${devices.devices.map((d) => `<tr>
@@ -176,19 +190,90 @@ ${devices.devices.map((d) => `<tr>
 <h2>Filling a cell</h2>
 <p>If you can verify one field, send a pull request to <a href="https://github.com/gdalabs/romguard">GitHub</a>. There is one rule.</p>
 <div class="panel">
-  <p><strong>Every value requires <code>source</code> (URL) and <code>verified_at</code> (date).</strong>
-  Leave guesses, hearsay, and assumptions <code>null</code>. <code>scripts/validate.mjs</code> enforces this.</p>
+  <p><strong>A value requires <code>source</code> (URL) and <code>verified_at</code> (date).</strong>
+  Guesses, hearsay and "pretty sure" stay <code>null</code>. <code>scripts/validate.mjs</code> enforces this
+  mechanically, so a PR that skips it fails the build rather than reaching the site.</p>
 </div>
 <pre>${esc(JSON.stringify({ arb: { value: 4, source: "https://…", verified_at: "2026-08-09", note: null } }, null, 2))}</pre>
 <p class="src">Last updated: ${esc(devices.updated_at)}</p>
 `;
 
+/* ---------------- /verify/ ---------------- */
+const fmtSize = (n) => (n ? (n / 1024 ** 3).toFixed(2) + " GB" : "—");
+const romCount = roms.roms.length;
+
+const verifyBody = `
+<h1>Hash records</h1>
+<p class="lead">
+  This site hosts no ROM files. It records which URL served which file, with which hash, on which date.
+  That carries less legal risk than mirroring and is more useful than mirroring.
+</p>
+
+<h2>Records</h2>
+${romCount === 0 ? `
+<div class="panel warn">
+  <div class="verdict">0 records</div>
+  <p>Nothing recorded yet. Only <strong>hashes computed here from a file actually downloaded</strong> are
+  accepted, so this grows one verified entry at a time.</p>
+</div>` : `
+<p>${romCount} record${romCount === 1 ? "" : "s"}. Every one was computed from a file downloaded here —
+none are transcribed from an upstream page.</p>
+<div class="scroll"><table>
+<tr><th>ROM</th><th>SHA-256</th><th>Size</th><th>Verified</th></tr>
+${roms.roms.map((r) => `<tr>
+  <th>${esc(r.rom || r.id)}<div class="src">${esc(r.file || "")}</div>
+    <div class="src"><a href="${esc(r.source_url)}" rel="noopener nofollow" target="_blank">source</a></div></th>
+  <td style="word-break:break-all"><code>${esc(r.sha256)}</code></td>
+  <td>${esc(fmtSize(r.size))}</td>
+  <td>${esc(r.verified_at)}</td>
+</tr>`).join("\n")}
+</table></div>`}
+
+<h2>Checking a file</h2>
+<h3>macOS / Linux</h3>
+<pre>shasum -a 256 &lt;file&gt;
+# or
+sha256sum &lt;file&gt;</pre>
+
+<h3>Windows (PowerShell)</h3>
+<pre>Get-FileHash .\\&lt;file&gt; -Algorithm SHA256</pre>
+
+<h3>Windows (cmd)</h3>
+<pre>certutil -hashfile &lt;file&gt; SHA256</pre>
+
+<h2>What this catches, and what it does not</h2>
+<div class="scroll"><table>
+  <tr><th style="width:30%">Catches</th><td>Corruption in transit, substitution by an intermediate mirror, and files from sites impersonating the distributor. <strong>Flashing a corrupted ROM</strong> is a common way to end up in the EDL case, and this removes most of it.</td></tr>
+  <tr><th>Does not catch</th><td><strong>A compromised upstream.</strong> If what was distributed was already malicious when recorded, the hash matches. For a build produced by a small independent team, no third party can extend a signature chain down to your machine.</td></tr>
+</table></div>
+<div class="panel">
+  <p>A hash secures the path from the distributor to you. Whether the distributor deserves that trust is a
+  separate question, and not one this site can answer for you.</p>
+</div>
+
+<h2>Record format</h2>
+<p><a href="/data/roms.json">/data/roms.json</a> is the data. One entry looks like this.</p>
+<pre>${esc(JSON.stringify({
+  id: "…", device: "…", rom: "…", file: "…",
+  source_url: "https://（upstream URL）".replace("（", "(").replace("）", ")"),
+  sha256: "(64 hex)", size: 0, verified_at: "2026-08-09",
+}, null, 2))}</pre>
+<p class="src">
+  <code>mirror_url</code> and hashes transcribed from upstream are rejected by
+  <code>scripts/validate.mjs</code> — the policy lives in code because policies get forgotten.
+  Records are produced by <code>scripts/hash-rom.sh</code>, which streams the file through sha256
+  without storing it, so a 9 GB ROM costs no disk.
+</p>
+`;
+
 /* ---------------- output ---------------- */
 const pages = [
-  { path: "/risk/", file: "risk/index.html", title: "Irreversible conditions — ARB and EDL | ROM GUARD",
-    desc: "Irreversible Xiaomi ROM failure conditions, including ARB and EDL authorization, and what can be recovered.", body: riskBody },
+  { path: "/risk/", file: "risk/index.html", title: "What cannot be undone — ARB and EDL | ROM GUARD",
+    desc: "The conditions that make a Xiaomi permanently unrecoverable: Anti-Rollback eFuse violations and EDL without an authorized account, plus what is recoverable.", body: riskBody },
   { path: "/devices/", file: "devices/index.html", title: "Devices | ROM GUARD",
-    desc: "Per-device Xiaomi unlock, ARB, FeliCa, and LineageOS data. Unverified fields remain explicit.", body: devicesBody },
+    desc: "Per-device bootloader unlock policy, EDL authorization, ARB index, FeliCa and LineageOS support. Unverified fields are shown as unverified.", body: devicesBody },
+  { path: "/verify/", file: "verify/index.html", title: "Hash records — is your download the file that was recorded? | ROM GUARD",
+    desc: "Why ROM GUARD records SHA-256 hashes instead of mirroring ROM files, and how to check a download yourself.", body: verifyBody },
 ];
 
 for (const p of pages) {
@@ -203,7 +288,6 @@ mkdirSync(join(PUB, "data"), { recursive: true });
 for (const f of readdirSync(DATA)) copyFileSync(join(DATA, f), join(PUB, "data", f));
 console.log(`copied ${readdirSync(DATA).length} data files`);
 
-// Sitemap: fewer than 50 URLs, so no layered split (consider splitting above 100).
 const today = new Date().toISOString().slice(0, 10);
 const urls = ["/", "/risk/", "/verify/", "/devices/", "/about/"];
 writeFileSync(join(PUB, "sitemap.xml"),

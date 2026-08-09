@@ -85,7 +85,7 @@ function render() {
 
   // 1. Irreversibility verdict. Works without device data — this is the core.
   // Data strings end in a period; drop it when embedding mid-sentence.
-  const clip = (s) => esc(String(s).replace(/。\s*$/, ""));
+  const clip = (s) => esc(String(s).replace(/[.。]\s*$/, ""));
 
   if (state.downgrade === "yes") {
     out.appendChild(el("div", "panel danger", `

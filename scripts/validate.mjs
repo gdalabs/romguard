@@ -2,14 +2,14 @@
 /**
  * Stop bad data mechanically. No dependencies.
  *
- *   node scripts/validate.mjs
+ *   node scripts/validate.mjs [YYYY-MM-DD]
  *
  * The value of this project is that it says "not verified" when it has not verified something,
  * so the rule that matters most is the first one below: **a non-null value requires both a
  * source and a verification date**. Relax that and the dataset becomes a confident-looking lie.
  */
 
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -25,13 +25,11 @@ const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 const STALE_DAYS = 180;
 
-const read = (f) => JSON.parse(readFileSync(join(DATA, f), "utf8"));
-
-const daysSince = (d) =>
-  Math.floor((Date.parse(TODAY) - Date.parse(d)) / 86400000);
-
-// Allow an explicit date argument for reproducible CI runs.
+// Overridable so CI runs are reproducible.
 const TODAY = process.argv[2] || new Date().toISOString().slice(0, 10);
+
+const read = (f) => JSON.parse(readFileSync(join(DATA, f), "utf8"));
+const daysSince = (d) => Math.floor((Date.parse(TODAY) - Date.parse(d)) / 86400000);
 
 /* ---------- devices.json ---------- */
 const devices = read("devices.json");
@@ -90,8 +88,7 @@ for (const r of roms.roms ?? []) {
 /* ---------- rules.json ---------- */
 const rules = read("rules.json");
 for (const group of ["irreversible", "reversible", "lost_on_unlock"]) {
-  if (!Array.isArray(rules[group]) || rules[group].length === 0)
-    err(`rules.${group} is empty`);
+  if (!Array.isArray(rules[group]) || rules[group].length === 0) err(`rules.${group} is empty`);
 }
 for (const r of rules.irreversible) {
   if (!r.sources?.length) err(`rules.irreversible[${r.id}]: no sources. Claims about permanent damage must be cited`);

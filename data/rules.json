@@ -53,30 +53,42 @@
       "id": "ota",
       "title": "HyperOS OTA updates",
       "detail": "Devices with an unlocked bootloader do not receive official HyperOS updates.",
+      "region": "all",
       "sources": ["https://m.gsmarena.com/newscomm-60521p4.php"]
     },
     {
       "id": "integrity",
       "title": "Play Integrity",
-      "detail": "Banking apps, payments, and some games can stop working because Verified Boot is disabled.",
+      "detail": "Banking, payment and some games stop working, because Verified Boot is no longer intact.",
+      "region": "all",
       "sources": []
     },
     {
       "id": "widevine",
       "title": "Widevine L1",
-      "detail": "May drop to L3, preventing HD or higher playback in streaming services.",
+      "detail": "May drop to L3, which caps streaming services below HD.",
+      "region": "all",
       "sources": []
     },
     {
       "id": "felica",
-      "title": "FeliCa / mobile wallet",
-      "detail": "A feature of Japanese-market variants; changing to a global or custom ROM can disable it.",
+      "title": "FeliCa / Osaifu-Keitai",
+      "detail": "Present only on Japanese-market models. Flashing a global or custom ROM removes it, and it is not restored by going back to stock in every case.",
+      "region": "JP",
+      "sources": []
+    },
+    {
+      "id": "carrier-bands",
+      "title": "Carrier features and band configuration",
+      "detail": "VoLTE/VoWiFi profiles and band tables ship per region. A ROM from another region can silently drop calling or a band your local carrier depends on. Worst affected: devices bought abroad and used on a domestic network.",
+      "region": "region-specific",
       "sources": []
     },
     {
       "id": "warranty",
       "title": "Manufacturer warranty",
-      "detail": "May no longer apply once the bootloader is unlocked.",
+      "detail": "May be void from the moment the bootloader is unlocked.",
+      "region": "all",
       "sources": []
     }
   ],
@@ -90,6 +102,7 @@
       "One device per account per year",
       "Approval takes 3–7 days"
     ],
+    "regional_note": "Devices sold in mainland China carry additional account-binding restrictions beyond the global rules. Hong Kong, Macau and Taiwan units follow the non-CN path.",
     "sources": [
       "https://xdaforums.com/t/how-to-unlock-bootloader-on-xiaomi-hyperos-all-devices-except-cn.4654009/",
       "https://ncunlock.com/hyperos-bootloader-unlock-quota-limit-reached/",

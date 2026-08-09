@@ -36,21 +36,25 @@
 
   <h2 id="no-howto">Why there are no instructions here</h2>
   <p>
-    Instructions become obsolete quickly and mistakes can cause the most serious damage.
-    Obsolete instructions can cause an <a href="/risk/#arb">ARB violation</a> that leaves a device irreparable.
-    Read primary sources such as xiaomi.eu, XDA, and the LineageOS wiki for instructions.
-    This site helps assess whether an operation can be undone before following those sources.
+    Instructions rot faster than anything else on this subject, and the cost of following a stale one is
+    the highest. Someone reading an outdated guide and hitting an <a href="/risk/#arb">ARB violation</a>
+    ends up with hardware nobody can repair. Read the upstream sources for procedure —
+    xiaomi.eu, XDA, the LineageOS wiki. This site exists to tell you whether you should be running that
+    procedure at all.
   </p>
 
   <h2 id="mirror">Why no ROM files are mirrored</h2>
   <p>Three reasons; any one of them is sufficient.</p>
   <ol>
-    <li><strong>Redistribution rights cannot be assumed.</strong> Xiaomi owns the official ROM copyright; its EULA restricts redistribution.
-      For modified ROMs such as xiaomi.eu, redistribution rights cannot be assumed upstream or downstream.</li>
-    <li><strong>Source obligations may apply.</strong> Distributing binaries containing the Linux kernel can require providing corresponding source.</li>
-    <li><strong>A mirror becomes a distributor.</strong> Hosting the file makes the mirror responsible for distributing its contents,
-      This differs from simply relaying a user post. A malicious ROM can cause operational damage even before legal liability is considered:
-      Safe Browsing warnings and hosting suspension can make the site unavailable.</li>
+    <li><strong>No redistribution right.</strong> Official ROMs are Xiaomi's copyright and the EULA forbids
+      redistribution. Modified ROMs such as xiaomi.eu are themselves redistributed without that right,
+      so nothing downstream of them can be justified either.</li>
+    <li><strong>GPL obligations.</strong> Distributing a binary containing the Linux kernel obliges the
+      distributor to provide the corresponding source.</li>
+    <li><strong>Mirroring makes you the publisher.</strong> Hosting the file is your own act of making it
+      available — a different position from merely passing along what someone else posted. If a malicious
+      build were served, the practical consequence arrives long before any legal one: Safe Browsing
+      warnings and hosting suspension.</li>
   </ol>
   <p class="src">
     Every large ROM database states "we don't host files, we only link to official sources."
@@ -59,9 +63,10 @@
 
   <h2 id="unknown">Why blank cells are left blank</h2>
   <p>
-    <code>arb</code> and <code>felica</code> require a physical device or fastboot ROM metadata to verify.
-    Currently 60% of the <a href="/devices/">device dataset</a> is unverified.
-    A complete-looking table is less important than refusing guesses that could damage a device.
+    Fields such as <code>arb</code> and <code>felica</code> cannot be confirmed without the physical device
+    or the fastboot ROM metadata. Roughly 60% of the <a href="/devices/">device table</a> is currently
+    unverified. A fuller-looking table would be easy to produce, and on this subject a guess ends
+    somebody's phone.
   </p>
   <div class="panel">
     <p>Setting a value requires <code>source</code> (URL) and <code>verified_at</code> (date). This is not a
@@ -78,9 +83,10 @@
 
   <h2 id="legal">Legal</h2>
   <p>
-    Using a device without required local conformity certification may violate applicable radio laws.
-    Changing a ROM may also affect manufacturer warranty coverage.
-    This site does not recommend these actions; it documents their technical consequences.
+    Radio-equipment certification, import rules and consumer-warranty law differ by country. Operating a
+    device that lacks your jurisdiction's certification may be an offence where you live, and unlocking the
+    bootloader may void the manufacturer warranty. Nothing here is a recommendation to do either — it is a
+    record of the technical consequences. <strong>Follow the laws that apply where you are.</strong>
   </p>
 
   <h2 id="disclaimer">Disclaimer</h2>

@@ -86,5 +86,10 @@ Most fields can only be filled by someone holding the physical device. See
 ## Disclaimer
 
 Provided without warranty of any kind. Flashing can render a device permanently
-unusable. Using a device without the required technical conformity certification
-may violate the Radio Act in Japan. Act at your own risk.
+unusable.
+
+Radio-equipment certification, import rules and consumer-warranty law differ by
+country. Operating a device that lacks certification in your jurisdiction may be an
+offence where you live, and unlocking the bootloader may void the manufacturer
+warranty. Nothing here is a recommendation to do either — it is a record of the
+technical consequences. **Follow the laws that apply where you are.**
