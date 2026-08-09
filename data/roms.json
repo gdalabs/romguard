@@ -1,9 +1,20 @@
 {
-  "updated_at": "2026-08-09",
+  "updated_at": "2026-08-10",
   "note": "ROM files are never mirrored. What is recorded here is only which URL served which file, with which hash, on which date. sha256 must be computed by us; hashes transcribed from the upstream page are rejected, since a compromised upstream would be confirmed rather than caught.",
   "policy": {
     "mirror": false,
     "hash_source": "self-computed-only"
   },
-  "roms": []
+  "roms": [
+    {
+      "id": "peridot-OS3.0.302.0.WNPMIXM",
+      "device": "poco-f6",
+      "rom": "HyperOS 3.0.302.0 (global fastboot)",
+      "file": "peridot_global_images_OS3.0.302.0.WNPMIXM_20260527.0000.00_16.0_global_a36d19114e.tgz",
+      "source_url": "https://cdnorg.d.miui.com/OS3.0.302.0.WNPMIXM/peridot_global_images_OS3.0.302.0.WNPMIXM_20260527.0000.00_16.0_global_a36d19114e.tgz",
+      "sha256": "0f281b61cd0fff12631d7a5760a517009a3e0683827f2428ee70f62596d31681",
+      "size": 9216353007,
+      "verified_at": "2026-08-10"
+    }
+  ]
 }
