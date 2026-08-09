@@ -13,11 +13,43 @@ const state = { device: null, downgrade: null, rom: null };
 
 let DEVICES = null, RULES = null;
 
+let ROMS = null;
+
+/* A boot log that reports the real contents of the data files. It is decoration, but it
+   is not fiction — every number below is counted from what was actually loaded. */
+async function bootLog() {
+  const box = $("#boot");
+  if (!box) return;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const unverified = DEVICES.devices.reduce((n, d) =>
+    n + Object.values(d.fields).filter((f) => f.value == null).length, 0);
+
+  const lines = [
+    `romguard 0.1 :: xiaomi flashing reversibility`,
+    `rules.json    <span class="ok">ok</span>   <b>${RULES.irreversible.length}</b> irreversible, <b>${RULES.reversible.length}</b> recoverable`,
+    `devices.json  <span class="ok">ok</span>   <b>${DEVICES.devices.length}</b> devices, <b>${unverified}</b> fields unverified`,
+    `roms.json     ${ROMS.roms.length ? '<span class="ok">ok</span>' : '<span class="no">--</span>'}   <b>${ROMS.roms.length}</b> hash records`,
+    `mirror        <span class="no">off</span>  by policy`,
+    `ready.`,
+  ];
+
+  if (reduce) { box.innerHTML = lines.join("\n"); return; }
+
+  box.innerHTML = "";
+  for (const line of lines) {
+    box.insertAdjacentHTML("beforeend", line + "\n");
+    await new Promise((r) => setTimeout(r, 110));
+  }
+  box.insertAdjacentHTML("beforeend", '<span class="cursor"></span>');
+}
+
 async function boot() {
-  [DEVICES, RULES] = await Promise.all([
+  [DEVICES, RULES, ROMS] = await Promise.all([
     fetch("/data/devices.json").then((r) => r.json()),
     fetch("/data/rules.json").then((r) => r.json()),
+    fetch("/data/roms.json").then((r) => r.json()),
   ]);
+  bootLog();
 
   const sel = $("#device");
   if (sel) {
