@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About | ROM GUARD</title>
+<meta name="description" content="Why ROM GUARD hosts no ROM files, publishes no flashing instructions, and leaves unverified fields blank.">
+<link rel="canonical" href="https://romguard.pages.dev/about/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="/">ROM<span>/</span>GUARD</a>
+  <nav class="site">
+    <a href="/">check</a>
+    <a href="/risk/">what cannot be undone</a>
+    <a href="/verify/">hashes</a>
+    <a href="/devices/">devices</a>
+    <a href="/about/" aria-current="page">about</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>About</h1>
+  <p class="lead">
+    A non-commercial dataset covering the one part of Xiaomi ROM flashing that nobody has organised:
+    whether the thing you are about to do can be undone. Run by GDA Labs. No ads, no affiliate links.
+  </p>
+
+  <h2 id="scope">Scope</h2>
+  <div class="scroll"><table>
+    <tr><th style="width:30%">In scope</th><td>Reversibility (ARB, EDL, relocking). What unlocking costs you, per region. Verified per-device facts. Hash records for distributed ROM files.</td></tr>
+    <tr><th>Out of scope</th><td>Flashing instructions. ROM file distribution. Recommending a particular custom ROM.</td></tr>
+  </table></div>
+
+  <h2 id="no-howto">Why there are no instructions here</h2>
+  <p>
+    Instructions become obsolete quickly and mistakes can cause the most serious damage.
+    Obsolete instructions can cause an <a href="/risk/#arb">ARB violation</a> that leaves a device irreparable.
+    Read primary sources such as xiaomi.eu, XDA, and the LineageOS wiki for instructions.
+    This site helps assess whether an operation can be undone before following those sources.
+  </p>
+
+  <h2 id="mirror">Why no ROM files are mirrored</h2>
+  <p>Three reasons; any one of them is sufficient.</p>
+  <ol>
+    <li><strong>Redistribution rights cannot be assumed.</strong> Xiaomi owns the official ROM copyright; its EULA restricts redistribution.
+      For modified ROMs such as xiaomi.eu, redistribution rights cannot be assumed upstream or downstream.</li>
+    <li><strong>Source obligations may apply.</strong> Distributing binaries containing the Linux kernel can require providing corresponding source.</li>
+    <li><strong>A mirror becomes a distributor.</strong> Hosting the file makes the mirror responsible for distributing its contents,
+      This differs from simply relaying a user post. A malicious ROM can cause operational damage even before legal liability is considered:
+      Safe Browsing warnings and hosting suspension can make the site unavailable.</li>
+  </ol>
+  <p class="src">
+    Every large ROM database states "we don't host files, we only link to official sources."
+    That is not modesty.
+  </p>
+
+  <h2 id="unknown">Why blank cells are left blank</h2>
+  <p>
+    <code>arb</code> and <code>felica</code> require a physical device or fastboot ROM metadata to verify.
+    Currently 60% of the <a href="/devices/">device dataset</a> is unverified.
+    A complete-looking table is less important than refusing guesses that could damage a device.
+  </p>
+  <div class="panel">
+    <p>Setting a value requires <code>source</code> (URL) and <code>verified_at</code> (date). This is not a
+    convention described in prose — <code>scripts/validate.mjs</code> rejects the build otherwise, and warns
+    on anything verified more than 180 days ago.</p>
+  </div>
+
+  <h2 id="contribute">Contributing</h2>
+  <p>
+    The data is the JSON in the <a href="https://github.com/gdalabs/romguard">GitHub repository</a>; the site
+    is a view of it. Pull requests filling in a single field are welcome. Most fields can only be filled by
+    someone holding the device, so this dataset will not be finished by one person.
+  </p>
+
+  <h2 id="legal">Legal</h2>
+  <p>
+    Using a device without required local conformity certification may violate applicable radio laws.
+    Changing a ROM may also affect manufacturer warranty coverage.
+    This site does not recommend these actions; it documents their technical consequences.
+  </p>
+
+  <h2 id="disclaimer">Disclaimer</h2>
+  <div class="panel danger">
+    <p>Provided without warranty of any kind. No guarantee is made as to accuracy or currency, and no
+    liability is accepted for any damage arising from actions taken on the basis of this information.
+    Flashing can render a device permanently unusable. Proceed at your own risk and judgement.</p>
+  </div>
+
+  <h2 id="contact">Contact</h2>
+  <p>Corrections go to <a href="https://github.com/gdalabs/romguard/issues">GitHub Issues</a>.
+  Reports of the form "this page nearly cost me a device" are handled first.</p>
+</main>
+
+<footer class="site"><div class="wrap">
+  <p>ROM GUARD — no warranty. Flashing can end a device permanently. Follow the laws that apply where you are.</p>
+  <p>Data CC BY 4.0 / code MIT · <a href="https://github.com/gdalabs/romguard">GitHub</a> · GDA Labs</p>
+</div></footer>
+</body>
+</html>

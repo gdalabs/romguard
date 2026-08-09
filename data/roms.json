@@ -1,0 +1,9 @@
+{
+  "updated_at": "2026-08-09",
+  "note": "ROM files are never mirrored. What is recorded here is only which URL served which file, with which hash, on which date. sha256 must be computed by us; hashes transcribed from the upstream page are rejected, since a compromised upstream would be confirmed rather than caught.",
+  "policy": {
+    "mirror": false,
+    "hash_source": "self-computed-only"
+  },
+  "roms": []
+}

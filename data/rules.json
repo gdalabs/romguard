@@ -1,0 +1,124 @@
+{
+  "updated_at": "2026-08-09",
+  "note": "Device-independent rules about what can and cannot be undone. This layer needs no physical hardware to write, and it is the core of the project.",
+  "irreversible": [
+    {
+      "id": "arb",
+      "title": "Anti-Rollback (ARB) violation",
+      "severity": "permanent",
+      "what": "An ARB index is burned into the chipset's eFuse storage. Flashing firmware whose ARB index is lower than the one currently burned sets a permanent fuse.",
+      "result": "The device stops booting and cannot be recovered by any software or hardware method. No repair shop can fix it.",
+      "trigger": "Downgrading firmware. Most often: 'going back to the last stable build', or flashing an older ROM from a different region.",
+      "avoid": "Confirm that the ARB index of the ROM you are about to flash is greater than or equal to the one currently on the device. If you cannot confirm it, do not flash.",
+      "sources": [
+        "https://xiaomiwiki.github.io/wiki/Access_EDL_mode.html",
+        "https://xdaforums.com/t/how-to-unlock-bootloader-on-xiaomi-hyperos-all-devices-except-cn.4654009/"
+      ]
+    },
+    {
+      "id": "edl",
+      "title": "Dropping to EDL (9008) without an authorized account",
+      "severity": "practically-permanent",
+      "what": "If the device boots neither the system nor fastboot, writing from EDL (Emergency Download Mode) is the only route left. Since 2018 Xiaomi has restricted EDL writes to authorized Mi Accounts.",
+      "result": "End users cannot recover the device themselves. It becomes a paid repair-shop job.",
+      "trigger": "Operations that break the partition layout; the cable coming loose or the PC sleeping mid-flash; flashing firmware that does not match the device.",
+      "avoid": "Do not let the PC sleep during a flash. Use a cable that actually carries data. Charge above 50% first.",
+      "sources": [
+        "https://www.xda-developers.com/xiaomi-edl-unbrick-authorized-mi-accounts/",
+        "https://droidwin.com/fix-mi-account-authorization-unbrick-xiaomi-edl-mode/"
+      ]
+    },
+    {
+      "id": "relock-custom",
+      "title": "Relocking the bootloader while a custom ROM is installed",
+      "severity": "usually-recoverable",
+      "what": "Custom ROMs are signed with different keys. Relocking makes Verified Boot detect the signature mismatch and refuse to boot.",
+      "result": "The device will not boot. If fastboot still responds you can flash the official ROM and recover; if fastboot is gone too, you are in the EDL case above.",
+      "trigger": "Relocking to satisfy banking apps or Play Integrity while still running a custom ROM.",
+      "avoid": "Only relock immediately after flashing the official fastboot ROM back (flash_all_lock).",
+      "sources": ["https://miuirom.org/updates/xiaomi-bootloader"]
+    }
+  ],
+  "reversible": [
+    {
+      "id": "back-to-stock",
+      "title": "Returning to the official ROM",
+      "how": "Download the official fastboot ROM and write it with flash_all. Use flash_all_lock if you also want the bootloader closed. You start over from the Mi Account setup.",
+      "caveat": "Pick a ROM whose ARB index is greater than or equal to the current one. Getting this wrong puts you in the arb case above.",
+      "sources": ["https://miuirom.org/updates/xiaomi-bootloader"]
+    }
+  ],
+  "lost_on_unlock": [
+    {
+      "id": "ota",
+      "title": "HyperOS OTA updates",
+      "detail": "Devices with an unlocked bootloader do not receive official HyperOS updates.",
+      "sources": ["https://m.gsmarena.com/newscomm-60521p4.php"]
+    },
+    {
+      "id": "integrity",
+      "title": "Play Integrity",
+      "detail": "Banking apps, payments, and some games can stop working because Verified Boot is disabled.",
+      "sources": []
+    },
+    {
+      "id": "widevine",
+      "title": "Widevine L1",
+      "detail": "May drop to L3, preventing HD or higher playback in streaming services.",
+      "sources": []
+    },
+    {
+      "id": "felica",
+      "title": "FeliCa / mobile wallet",
+      "detail": "A feature of Japanese-market variants; changing to a global or custom ROM can disable it.",
+      "sources": []
+    },
+    {
+      "id": "warranty",
+      "title": "Manufacturer warranty",
+      "detail": "May no longer apply once the bootloader is unlocked.",
+      "sources": []
+    }
+  ],
+  "unlock_policy": {
+    "updated_at": "2026-08-09",
+    "summary": "Since 2025 the path to an unlocked bootloader has narrowed substantially.",
+    "conditions": [
+      "A minimum activity level on the Xiaomi Community app is required",
+      "A knowledge quiz must be passed",
+      "Application slots are capped and can fill at 00:00 GMT+8 ('quota limit reached')",
+      "One device per account per year",
+      "Approval takes 3–7 days"
+    ],
+    "sources": [
+      "https://xdaforums.com/t/how-to-unlock-bootloader-on-xiaomi-hyperos-all-devices-except-cn.4654009/",
+      "https://ncunlock.com/hyperos-bootloader-unlock-quota-limit-reached/",
+      "https://github.com/realdtn2/xiaomi-unlocking-rooting-guide"
+    ]
+  },
+  "rom_types": [
+    {
+      "id": "official",
+      "name": "Official ROM (HyperOS / MIUI)",
+      "open_source": false,
+      "detail": "The only ROM Xiaomi signs. It is also the only one with access to every layer, including the bootloader, modem and trustzone."
+    },
+    {
+      "id": "xiaomi-eu",
+      "name": "xiaomi.eu",
+      "open_source": false,
+      "detail": "An official ROM modified and re-signed by a small independent team. No source is published. It is the most common 'custom ROM' recommendation outside China, and installing it means granting system-level trust to a third-party build nobody can audit."
+    },
+    {
+      "id": "lineageos",
+      "name": "LineageOS and other AOSP builds",
+      "open_source": true,
+      "detail": "Source is published and reviewable. Camera, modem and DRM vendor blobs remain closed binaries, so it is not fully open source. Most devices also require a specific stock firmware to be installed first — a vendor SPL mismatch breaks the camera and other hardware."
+    }
+  ],
+  "layers": [
+    { "name": "Bootloader / xbl, abl, modem, trustzone", "flashable_by_third_party": false, "detail": "Xiaomi-signed. Not what a custom ROM replaces." },
+    { "name": "Vendor / firmware blobs", "flashable_by_third_party": false, "detail": "Only images from an official fastboot ROM are accepted." },
+    { "name": "Android OS (boot / system / product)", "flashable_by_third_party": true, "detail": "This is the only layer a custom ROM replaces." }
+  ]
+}

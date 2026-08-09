@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROM GUARD — Before you flash a Xiaomi, check whether you can undo it</title>
+<meta name="description" content="Two failure modes end a Xiaomi permanently: an Anti-Rollback eFuse violation and dropping to EDL without an authorized account. Check before you flash. No ROM mirrors, no how-tos.">
+<link rel="canonical" href="https://romguard.pages.dev/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site"><div class="wrap">
+  <a class="brand" href="/">ROM<span>/</span>GUARD</a>
+  <nav class="site">
+    <a href="/" aria-current="page">check</a>
+    <a href="/risk/">what cannot be undone</a>
+    <a href="/verify/">hashes</a>
+    <a href="/devices/">devices</a>
+    <a href="/about/">about</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+  <h1>Before you flash, check whether you can undo it</h1>
+  <p class="lead">
+    The worst outcome of flashing a Xiaomi is not a device that fails to boot. It is a device
+    <strong>nobody can ever repair</strong>. There are only two ways to get there, and both are
+    avoidable — but only before you flash. This is not a how-to. It is the check you run first.
+  </p>
+
+  <div class="panel">
+    <div class="field">
+      <label for="device">Device (optional)</label>
+      <select id="device"><option value="">Not selected</option></select>
+    </div>
+
+    <div class="field">
+      <label>Is the firmware you plan to flash <strong>older</strong> than what is on the device now?</label>
+      <div class="choices" data-group="downgrade">
+        <button type="button" data-value="no" aria-pressed="false">No (same or newer)</button>
+        <button type="button" data-value="yes" aria-pressed="false">Yes (going back)</button>
+        <button type="button" data-value="unknown" aria-pressed="false">I don't know</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>What kind of ROM is it?</label>
+      <div class="choices" data-group="rom">
+        <button type="button" data-value="official" aria-pressed="false">Official</button>
+        <button type="button" data-value="xiaomi-eu" aria-pressed="false">xiaomi.eu</button>
+        <button type="button" data-value="lineageos" aria-pressed="false">LineageOS etc.</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="result"></div>
+
+  <h2>What this answers, and what it does not</h2>
+  <div class="scroll"><table>
+    <tr><th style="width:33%">Answers</th><td>Whether the operation is <strong>reversible</strong>. The ARB and EDL conditions. What unlocking costs you in your region. Whether a downloaded file matches what was recorded.</td></tr>
+    <tr><th>Does not answer</th><td><strong>How to flash.</strong> Instructions rot fastest and do the most damage when wrong, so they are left to the upstream sources.</td></tr>
+    <tr><th>Does not host</th><td><strong>ROM files.</strong> No redistribution right, and a poisoned mirror would make us the publisher. <a href="/about/#mirror">Why</a></td></tr>
+  </table></div>
+
+  <h2>Coverage</h2>
+  <p class="lead" style="margin-bottom:12px">
+    Blank cells are shown as blank. Some fields cannot be confirmed without the physical device,
+    and this project does not fill those in by guessing.
+  </p>
+  <div class="meter" id="coverage"></div>
+
+  <h2>Start here</h2>
+  <ul>
+    <li><a href="/risk/#arb">Anti-Rollback (ARB) violation</a> — burned into an eFuse. No recovery exists.</li>
+    <li><a href="/risk/#edl">Dropping to EDL (9008)</a> — needs an authorized Mi Account you almost certainly do not have.</li>
+    <li><a href="/risk/#relock">Relocking on a custom ROM</a> — will not boot; recoverable while fastboot lives.</li>
+  </ul>
+</main>
+
+<footer class="site"><div class="wrap">
+  <p>ROM GUARD — no warranty. Flashing can end a device permanently. Follow the laws that apply where you are.</p>
+  <p>Data CC BY 4.0 / code MIT · <a href="https://github.com/gdalabs/romguard">GitHub</a> · GDA Labs</p>
+</div></footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# ROM GUARD
+
+> A dataset about Xiaomi ROM changes focused only on whether they can be undone.
+> No ROM distribution or flashing instructions. Nonprofit and advertising-free.
+
+## Policy
+
+- Two permanent failure modes: Anti-Rollback (ARB) violation and EDL (9008) without an authorized Mi Account.
+- Never mirror ROM files: redistribution rights, source obligations, and distributor responsibility apply.
+- Values require source URLs and verification dates. Leave unverified fields null; the build enforces this.
+
+## Data
+
+- [Devices](https://romguard.pages.dev/data/devices.json): Per-device bootloader unlock, EDL, ARB, FeliCa, and LineageOS data
+- [Rules](https://romguard.pages.dev/data/rules.json): Reversibility rules, ROM types, and writable layers
+- [Hash records](https://romguard.pages.dev/data/roms.json): SHA-256 records for distributed files, computed locally
+
+## Pages
+
+- [Check](https://romguard.pages.dev/): Checks before flashing
+- [Irreversible conditions](https://romguard.pages.dev/risk/): ARB, EDL, and relocking details
+- [Hash verification](https://romguard.pages.dev/verify/): Verification steps and the limits of hash checking
+- [Devices](https://romguard.pages.dev/devices/): Device list, including unverified fields
+- [About](https://romguard.pages.dev/about/): Policy and disclaimer
+
+## Notes
+
+No warranty. Using devices without required local certification may violate applicable radio laws.
