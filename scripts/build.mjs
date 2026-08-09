@@ -57,7 +57,7 @@ function page({ path, title, desc, body }) {
 </head>
 <body>
 <header class="site"><div class="wrap">
-  <a class="brand" href="/">ROM<span>/</span>GUARD</a>
+  <a class="brand" href="/"><b>rom</b><i>@</i><b>guard</b><i>:~#</i></a>
   <nav class="site">
     ${nav}
   </nav>

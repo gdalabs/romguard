@@ -258,3 +258,22 @@ h1::after {
   body { text-shadow: none }
   body::before { background: none }
 }
+
+/* ---- wordmark ----
+   A shell prompt reads as a logo here without needing a logo. */
+.brand b { font-weight: 700; color: var(--fg-bright); }
+.brand i { font-style: normal; color: var(--fg-dim); }
+.brand::after {
+  /* Static block: the prompt. The blinking one belongs to the h1, where you are "typing". */
+  content: "\2588"; margin-left: 0.1em; color: var(--fg-dim);
+}
+.brand:hover b { color: #fff; }
+
+.banner {
+  border: none; background: transparent; padding: 0;
+  margin: 0 0 20px; color: var(--fg);
+  font-size: 15px; line-height: 1.1; letter-spacing: 0;
+  overflow-x: auto;
+  text-shadow: 0 0 8px rgba(255, 176, 0, 0.45);
+}
+@media (max-width: 640px) { .banner { font-size: 11px } }
