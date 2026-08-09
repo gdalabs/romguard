@@ -29,14 +29,14 @@
     avoidable — but only before you flash. This is not a how-to. It is the check you run first.
   </p>
 
-  <div class="panel">
+  <div class="check">
     <div class="field">
-      <label for="device">Device (optional)</label>
-      <select id="device"><option value="">Not selected</option></select>
+      <label for="device"><span class="step">[01]</span>Device (optional)</label>
+      <select id="device"><option value="">-- not selected --</option></select>
     </div>
 
     <div class="field">
-      <label>Is the firmware you plan to flash <strong>older</strong> than what is on the device now?</label>
+      <label><span class="step">[02]</span>Is the firmware you are about to flash <strong>older</strong> than what is on the device now?</label>
       <div class="choices" data-group="downgrade">
         <button type="button" data-value="no" aria-pressed="false">No (same or newer)</button>
         <button type="button" data-value="yes" aria-pressed="false">Yes (going back)</button>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="field">
-      <label>What kind of ROM is it?</label>
+      <label><span class="step">[03]</span>What kind of ROM is it?</label>
       <div class="choices" data-group="rom">
         <button type="button" data-value="official" aria-pressed="false">Official</button>
         <button type="button" data-value="xiaomi-eu" aria-pressed="false">xiaomi.eu</button>
