@@ -34,6 +34,12 @@ node scripts/build.mjs        # Validate, then generate
 npm run deploy                # build → wrangler pages deploy public --project-name romguard
 ```
 
+## Repository
+
+**gdalabs/romguard (public)**. Secret scanning, push protection, Dependabot, and CodeQL are enabled.
+The design is an **amber terminal** (`public/style.css`). Monospace throughout; amber was chosen instead of green
+to coexist with the red used for danger warnings.
+
 ## Deployment
 
 Cloudflare Pages `romguard`. **No custom domain acquired** as of 2026-08-09.
