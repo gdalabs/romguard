@@ -2,7 +2,7 @@
   "name": "romguard",
   "version": "0.1.0",
   "private": true,
-  "description": "Can you undo this? A Japanese-language dataset for Xiaomi ROM flashing.",
+  "description": "Can you undo this? An English-language dataset for Xiaomi ROM flashing.",
   "license": "MIT",
   "type": "module",
   "scripts": {

@@ -1,6 +1,6 @@
 # ROM GUARD
 
-A Japanese-language dataset for Xiaomi ROM flashing that answers one question:
+An English-language dataset for Xiaomi ROM flashing that answers one question:
 **can you undo this?**
 
 Most flashing accidents are recoverable by writing the official fastboot ROM back.
@@ -14,7 +14,7 @@ anything else.
 ## Why this exists
 
 The two irreversible failure modes are documented in English only, scattered across
-XDA threads, and do not exist in Japanese at all:
+XDA threads, making these risks difficult to compare systematically:
 
 | Failure | Result |
 |---|---|
